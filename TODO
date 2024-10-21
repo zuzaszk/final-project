@@ -1,0 +1,5 @@
+[] add other models and set relationships
+[] add other repos (dao)
+[] implement authentication with SSO and Google Sign-In -> configuration and handler
+[] service layer for business logic
+[] add API endpoints (controllers)
