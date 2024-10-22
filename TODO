@@ -1,5 +1,13 @@
+Yimeng:
 [] add other models and set relationships
 [] add other repos (dao)
-[] implement authentication with SSO and Google Sign-In -> configuration and handler
+
+Wera and Zuza:
+[] implement authentication with SSO
+    [x] google
+    [] facebook
+    [] USOS
+    [] linkedin <- optional
+    [] github <- optional
 [] service layer for business logic
 [] add API endpoints (controllers)

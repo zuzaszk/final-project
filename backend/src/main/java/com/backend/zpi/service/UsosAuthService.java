@@ -19,7 +19,7 @@ public class UsosAuthService {
     private static final String CONSUMER_KEY = "wQCq3wEsQpVahyzd8U6J";
     private static final String CONSUMER_SECRET = "gkW7e7b55AwXy6nfKbmNsGjnY8V9ygm8y6s4g6MN";
 
-     private OAuth10aService service;
+    private OAuth10aService service;
 
     public UsosAuthService() {
         service = new ServiceBuilder(CONSUMER_KEY)
