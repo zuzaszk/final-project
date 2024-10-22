@@ -15,6 +15,9 @@
   </div>
   <h1>Vite + Svelte</h1>
 
+  <h1>Login</h1>
+  <a href="http://localhost:8080/oauth2/authorization/google">Login with Google</a>
+
   <div class="card">
     <Counter />
   </div>
