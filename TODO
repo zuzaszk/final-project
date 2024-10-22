@@ -11,3 +11,6 @@ Wera and Zuza:
     [] github <- optional
 [] service layer for business logic
 [] add API endpoints (controllers)
+
+
+[] move backend and frontend to separate repositories
