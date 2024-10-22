@@ -2,6 +2,13 @@
   import svelteLogo from './assets/svelte.svg'
   import viteLogo from '/vite.svg'
   import Counter from './lib/Counter.svelte'
+  function loginWithGoogle() {
+        window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    }
+
+    function loginWithFacebook() {
+        window.location.href = 'http://localhost:8080/oauth2/authorization/facebook';
+    }
 </script>
 
 <main>
@@ -15,8 +22,11 @@
   </div>
   <h1>Vite + Svelte</h1>
 
-  <h1>Login</h1>
-  <a href="http://localhost:8080/oauth2/authorization/google">Login with Google</a>
+<div class="login-container">
+    <button on:click={loginWithGoogle}>Login with Google</button>
+    <button on:click={loginWithFacebook}>Login with Facebook</button>
+</div>
+
 
   <div class="card">
     <Counter />
