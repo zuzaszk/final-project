@@ -13,6 +13,10 @@ Wera and Zuza:
     [] USOS <- we don't have access :joy_cat:
     [] linkedin <- optional
     [] github <- optional
+[] implement adding user to database
+
+Zuza:
+[] Model, Service, Repositories and API for User and Role
 [] move backend and frontend to separate repositories
 
 
