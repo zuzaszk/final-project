@@ -1,16 +1,19 @@
 Yimeng:
-[] add other models and set relationships
-[] add other repos (dao)
+Project, Element and Element Type:
+[] models
+[] service
+[] repositories
+[] controllers (API)
+
 
 Wera and Zuza:
 [] implement authentication with SSO
     [x] google
-    [] facebook
-    [] USOS
+    [?] facebook <- we need privacy policy and user deletion
+    [] USOS <- we don't have access :joy_cat:
     [] linkedin <- optional
     [] github <- optional
-[] service layer for business logic
-[] add API endpoints (controllers)
-
-
 [] move backend and frontend to separate repositories
+
+
+[] Model, Service, Repositories and API for other entities
