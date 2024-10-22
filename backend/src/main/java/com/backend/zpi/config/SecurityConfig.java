@@ -13,9 +13,9 @@ public class SecurityConfig {
 
     @Value("${frontend_url}")
     private String frontendUrl;
-    
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/", "/login").permitAll()
