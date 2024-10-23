@@ -12,49 +12,45 @@ import org.springframework.security.cas.web.CasAuthenticationEntryPoint;
 @Configuration
 public class SecurityConfig {
 
-    private final CasAuthenticationEntryPoint casAuthenticationEntryPoint;
-    private final CasConfig casConfig;
+    //private final CasAuthenticationEntryPoint casAuthenticationEntryPoint;
+//    private final CasConfig casConfig;
 
-    // Inject beans from CasConfig
-    public SecurityConfig(CasAuthenticationEntryPoint casAuthenticationEntryPoint, CasConfig casConfig) {
-        this.casAuthenticationEntryPoint = casAuthenticationEntryPoint;
-        this.casConfig = casConfig;
-    }
+//    // Inject beans from CasConfig
+//    public SecurityConfig(CasAuthenticationEntryPoint casAuthenticationEntryPoint, CasConfig casConfig) {
+//        this.casAuthenticationEntryPoint = casAuthenticationEntryPoint;
+//        this.casConfig = casConfig;
+//    }
 
     // Define the AuthenticationManager bean
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+//        return authenticationConfiguration.getAuthenticationManager();
+//    }
+//
+//    // CAS Authentication Filter
+//    @Bean
+//    public CasAuthenticationFilter casAuthenticationFilter(AuthenticationManager authenticationManager) {
+//        CasAuthenticationFilter casFilter = new CasAuthenticationFilter();
+//        casFilter.setAuthenticationManager(authenticationManager);  // Inject the AuthenticationManager
+//        return casFilter;
+//    }
 
-    // CAS Authentication Filter
-    @Bean
-    public CasAuthenticationFilter casAuthenticationFilter(AuthenticationManager authenticationManager) {
-        CasAuthenticationFilter casFilter = new CasAuthenticationFilter();
-        casFilter.setAuthenticationManager(authenticationManager);  // Inject the AuthenticationManager
-        return casFilter;
-    }
 
-    // Security filter chain for configuring Spring Security
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests
-                                .requestMatchers("/public/**").permitAll()  // Allow public URLs
-                                .anyRequest().authenticated()               // Secure everything else
-                )
-                .logout(logout ->
-                        logout
-                                .logoutUrl("/logout")
-                                .logoutSuccessUrl("/login")
-                                .permitAll()
-                )
-                .exceptionHandling(exceptionHandling ->
-                        exceptionHandling.authenticationEntryPoint(casAuthenticationEntryPoint)
-                )
-                .addFilter(casAuthenticationFilter(authenticationManager));  // Inject the AuthenticationManager into casAuthenticationFilter
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authorize -> authorize
+                        //for testing now, allow all requests
+                        .anyRequest().permitAll()
+                );
 
         return http.build();
     }
+
+
+
+
+
+
 }
