@@ -3,7 +3,7 @@ package com.backend.zpi.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.backend.zpi.entity.User;
+import com.backend.zpi.entity.Users;
 import com.backend.zpi.repository.UserRepository;
 
 import java.util.List;
@@ -16,27 +16,27 @@ public class UserService {
     private UserRepository userRepository;
 
     // Retrieve all users
-    public List<User> getAllUsers() {
+    public List<Users> getAllUsers() {
         return userRepository.findAll();
     }
 
     // Retrieve a user by their ID
-    public Optional<User> getUserById(Integer userId) {
+    public Optional<Users> getUserById(Integer userId) {
         return userRepository.findById(userId);
     }
 
     // Retrieve a user by email
-    public Optional<User> getUserByEmail(String email) {
+    public Optional<Users> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     // Save a new user
-    public User saveUser(User user) {
+    public Users saveUser(Users user) {
         return userRepository.save(user);
     }
 
     // Update a user (assumes the user exists)
-    public User updateUser(User user) {
+    public Users updateUser(Users user) {
         return userRepository.save(user);
     }
 
