@@ -3,7 +3,7 @@ package com.backend.zpi.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.backend.zpi.model.User;
+import com.backend.zpi.entity.User;
 import com.backend.zpi.repository.UserRepository;
 
 import java.util.List;
