@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 
 @Data
-public class Users {
+public class User {
 
     private static final long serialVersionUID = 1L;
 
