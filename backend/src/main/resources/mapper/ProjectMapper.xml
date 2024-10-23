@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.zpi.mapper.ProjectMapper">
+
+    <select id="listAllProjectsWithDetails" resultMap="ProjectResultMap">
+        SELECT p.project_id, p.title, p.acronym, p.description, p.language, p.status, p.created_at, p.is_archived,
+               u.user_id, u.email, u.first_name, u.last_name, r.role_name,
+               e.element_id, e.file_path, e.description AS element_description
+        FROM project p
+                 LEFT JOIN project_members pm ON p.project_id = pm.project_id
+                 LEFT JOIN users u ON pm.user_id = u.user_id
+                 LEFT JOIN role r ON pm.role_id = r.role_id
+                 LEFT JOIN element e ON p.project_id = e.project_id
+    </select>
+
+    <select id="listAll" resultMap="SimpleProjectResultMap">
+        SELECT p.project_id, p.title, p.acronym, p.description, p.language, p.status, p.is_archived, p.year FROM project p
+        <where>
+            <if test="title != null and title != ''">
+                AND p.title ILIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="year != null">
+                AND p.year = #{year}
+            </if>
+            <if test="language != null">
+                AND p.language = #{language}
+            </if>
+        </where>
+    </select>
+
+
+    <resultMap id="SimpleProjectResultMap" type="com.backend.zpi.entity.Project">
+        <id property="projectId" column="project_id"/>
+        <result property="title" column="title"/>
+        <result property="acronym" column="acronym"/>
+        <result property="description" column="description"/>
+        <result property="language" column="language"/>
+        <result property="status" column="status"/>
+        <result property="isArchived" column="is_archived"/>
+        <result property="year" column="year"/>
+    </resultMap>
+
+    <resultMap id="ProjectResultMap" type="com.backend.zpi.entity.Project">
+        <id property="projectId" column="project_id"/>
+        <result property="title" column="title"/>
+        <result property="acronym" column="acronym"/>
+        <result property="description" column="description"/>
+        <result property="language" column="language"/>
+        <result property="status" column="status"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="isArchived" column="is_archived"/>
+
+        <collection property="users" ofType="com.backend.zpi.entity.Users">
+            <id property="userId" column="user_id"/>
+            <result property="email" column="email"/>
+            <result property="firstName" column="first_name"/>
+            <result property="lastName" column="last_name"/>
+            <association property="role" javaType="com.backend.zpi.entity.Role">
+                <result property="roleName" column="role_name"/>
+            </association>
+        </collection>
+
+        <collection property="elements" ofType="com.backend.zpi.entity.Element">
+            <id property="elementId" column="element_id"/>
+            <result property="filePath" column="file_path"/>
+            <result property="description" column="element_description"/>
+        </collection>
+    </resultMap>
+
+
+
+
+
+</mapper>
