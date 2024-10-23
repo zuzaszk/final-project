@@ -6,6 +6,10 @@ import UsosCallback from './pages/UsosCallback.svelte';
 import GoogleCallback from './pages/GoogleCallback.svelte';
 import FacebookCallback from './pages/FacebookCallback.svelte';
 import StudentDashboard from './pages/StudentDashboard.svelte';
+import UploadProject from './pages/UploadProject.svelte'; 
+import Logout from './pages/Logout.svelte';
+import Projects from './pages/Projects.svelte';
+import ProjectDetails from './pages/ProjectDetails.svelte';
 
 export const routes = {
   '/': Login,
@@ -16,4 +20,8 @@ export const routes = {
   '/google-callback': GoogleCallback,
   '/facebook-callback': FacebookCallback,
   '/dashboard': StudentDashboard, 
+  '/projects': Projects,  
+  '/upload': UploadProject,
+  '/logout': Logout, 
+  '/projects/:id': ProjectDetails, 
 };

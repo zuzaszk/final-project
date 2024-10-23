@@ -1,14 +1,20 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
+    "moduleResolution": "node",  
     "target": "ESNext",
     "module": "ESNext",
     "isolatedModules": true,
-    "resolveJsonModule": true,
+    "resolveJsonModule": true,    
     "sourceMap": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "checkJs": false
   },
-  "include": ["src/**/*.svelte", "src/**/*.js", "src/pages/**/*.svelte", "src/components/**/*.svelte"]
+  "include": [
+    "src/**/*.svelte",
+    "src/**/*.js",
+    "src/pages/**/*.svelte",
+    "src/components/**/*.svelte",
+    "src/utils/**/*.svelte"
+  ]
 }

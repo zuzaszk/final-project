@@ -7,7 +7,7 @@
     try {
       loading = true;
       
-      const response = await fetch('https://api.example.com/signup', {
+      const response = await fetch('https://localhost:8080/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, lastName, username, email, password })

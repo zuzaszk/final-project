@@ -13,7 +13,7 @@
     try {
       loading = true;
       
-      const response = await fetch('https://api.example.com/login', {
+      const response = await fetch('https://localhost:8080/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -36,12 +36,12 @@
 
   function loginWithGoogle() {
     
-    window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=<YOUR_GOOGLE_CLIENT_ID>&redirect_uri=http://localhost:5173/google-callback&response_type=token&scope=email profile';
+    window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=<GOOGLE_CLIENT_ID>&redirect_uri=http://localhost:5173/google-callback&response_type=token&scope=email profile';
   }
 
   function loginWithFacebook() {
     
-    window.location.href = 'https://www.facebook.com/v11.0/dialog/oauth?client_id=<YOUR_FACEBOOK_CLIENT_ID>&redirect_uri=http://localhost:5173/facebook-callback&response_type=token&scope=email';
+    window.location.href = 'https://www.facebook.com/v11.0/dialog/oauth?client_id=<FACEBOOK_CLIENT_ID>&redirect_uri=http://localhost:5173/facebook-callback&response_type=token&scope=email';
   }
 
   function handleUsosLogin() {

@@ -22,7 +22,7 @@
   
       try {
         loading = true;
-        const response = await fetch('https://api.example.com/reset-password', {
+        const response = await fetch('https://localhost:8080/reset-password', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

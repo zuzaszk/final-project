@@ -8,7 +8,7 @@
       try {
         loading = true;
        
-        const response = await fetch('https://api.example.com/forgot-password', {
+        const response = await fetch('https://localhost:8080/forgot-password', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
