@@ -109,9 +109,9 @@
     padding-top: 100px; 
   }
 
-  /* Additional responsiveness tweaks */
+  
   @media (max-width: 768px) {
-    /* Ensure form fields take full width on smaller screens */
+    
     .form-container {
       padding: 0 1rem;
     }

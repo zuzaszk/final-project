@@ -14,26 +14,33 @@
 
 
   async function fetchProjects() {
-    try {
-      const queryParams = [];
-      if (year) queryParams.push(`year=${year}`);
-      if (language) queryParams.push(`language=${language}`);
-      if (title.trim()) queryParams.push(`title=${encodeURIComponent(title)}`);
-      
-      const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
+  try {
+    const queryParams = [];
+    if (year) queryParams.push(`year=${year}`);
 
-      const response = await fetch(`http://192.168.0.102:8080/zpi/project/listAll${queryString}`);
-      if (response.ok) {
-        const data = await response.json();
-        filteredProjects = data;
-        totalPages = Math.ceil(filteredProjects.length / 8);
-      } else {
-        error = 'Failed to fetch projects.';
-      }
-    } catch (err) {
-      error = 'Error fetching projects: ' + err.message;
+    
+    let languageId;
+    if (language === 'EN') languageId = 1;
+    else if (language === 'PL') languageId = 2;
+
+    if (languageId) queryParams.push(`language=${languageId}`);
+    if (title.trim()) queryParams.push(`title=${encodeURIComponent(title)}`);
+
+    const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
+
+    const response = await fetch(`http://192.168.0.102:8080/zpi/project/listAll${queryString}`);
+    if (response.ok) {
+      const data = await response.json();
+      filteredProjects = data;
+      totalPages = Math.ceil(filteredProjects.length / 8);
+    } else {
+      error = 'Failed to fetch projects.';
     }
+  } catch (err) {
+    error = 'Error fetching projects: ' + err.message;
+    console.error(error); 
   }
+}
 
 
   function goToProjectDetails(projectId) {
@@ -99,7 +106,7 @@
   }
 
   .pagination-btn {
-    padding: 8px 12px;
+    padding: 6px 12px;
     margin: 0 4px;
     border: 1px solid #BDC3C7;
     border-radius: 5px;

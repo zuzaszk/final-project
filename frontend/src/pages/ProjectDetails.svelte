@@ -12,12 +12,17 @@
   let loading = true;
   let error = '';
 
+  
+  function getLanguageName(languageCode) {
+    if (languageCode === 1) return 'English';
+    if (languageCode === 2) return 'Polish';
+    return 'Unknown'; 
+  }
 
   $: loc.subscribe(($loc) => {
     const pathParts = $loc.location.split('/');
     projectId = pathParts[pathParts.length - 1]; 
   });
-
 
   async function fetchProjectDetails() {
     if (!projectId) {
@@ -57,17 +62,21 @@
     if (response.ok) {
       const contentType = response.headers.get('content-type');
       
-      if (contentType && contentType.includes('application/json')) {
-        const result = await response.json();
-        if (result.success) {
-          newComment = ''; 
+
+      if (contentType && contentType.includes('text/plain')) {
+        const result = await response.text(); 
+        console.log('Response:', result); 
+        if (result.includes('Comment added successfully')) {
+          
+          newComment = '';
+
+          
           await fetchProjectDetails(); 
         } else {
-          console.error('Failed to submit comment:', result.message);
+          console.error('Unexpected response:', result);
         }
       } else {
-        const result = await response.text();
-        console.error('Unexpected response (not JSON):', result);
+        console.error('Unexpected response type:', contentType);
       }
     } else {
       console.error('Failed to submit comment: Network issue or error response');
@@ -78,7 +87,6 @@
     submitting = false;
   }
 }
-
 
 
 
@@ -93,7 +101,8 @@
   <div class="text-center text-xl text-red-600">{error}</div>
 {:else}
 
-  <div class="container mx-auto p-6 bg-white rounded-lg shadow-lg mt-20 max-w-6xl h-[650px] overflow-hidden">
+  
+  <div class="zoom-container container mx-auto p-6 bg-white rounded-lg shadow-lg mt-20 max-w-6xl h-[650px] overflow-hidden">
     <div class="h-full overflow-y-auto p-4">
       <div class="flex flex-col lg:flex-row justify-between">
         <div class="lg:w-2/3">
@@ -111,7 +120,7 @@
           <div class="flex space-x-10 mb-6">
             <div>
               <h3 class="text-lg font-bold text-[#2C3E50]">Language:</h3>
-              <p class="text-[#7F8C8D]">{project.language}</p>
+              <p class="text-[#7F8C8D]">{getLanguageName(project.language)}</p> <!-- Display language -->
             </div>
             <div>
               <h3 class="text-lg font-bold text-[#2C3E50]">Year:</h3>
@@ -121,7 +130,7 @@
 
           <!-- Team Members (Filtered to only show students) -->
           <div class="bg-[#ECF0F1] p-4 rounded-lg mb-6">
-            <h3 class="text-lg font-bold text-[#2C3E50] mb-4">Team Members (Students)</h3>
+            <h3 class="text-lg font-bold text-[#2C3E50] mb-4">Team Members</h3>
             <div class="grid grid-cols-2 gap-4">
               {#each members as member}
                 <div class="bg-white p-3 border-l-4 border-[#E74C3C] rounded-lg text-[#2C3E50] font-semibold">
@@ -172,7 +181,13 @@
   </div>
 {/if}
 
+
 <style>
+  .zoom-container {
+    transform: scale(0.9);  
+    transform-origin: center; 
+  }
+
   .container {
     max-width: 1200px;
   }

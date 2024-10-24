@@ -5,7 +5,7 @@
   export let handleSearch;
 </script>
 
-<div class="flex items-center space-x-2 mb-6"> <!-- Flexbox for alignment -->
+<div class="flex items-center space-x-2 mb-6"> 
   <select bind:value={year} class="w-40 p-2 border border-gray-300 rounded-lg text-sm text-black">
     <option value="">Select Year</option>
     <option value="2025">2025</option>

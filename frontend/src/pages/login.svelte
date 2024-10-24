@@ -86,7 +86,7 @@
   </div>
 </div>
 
-<!-- Styling for the scaling effect -->
+
 <style>
   .scaleContainer {
     display: flex;
@@ -94,9 +94,9 @@
     align-items: center;
   }
 
-  /* Scale the entire card down */
+
   .scaleContainer .transform {
-    transform: scale(0.75); /* Scale down to 75% */
-    transform-origin: center; /* Ensure it scales from the center */
+    transform: scale(0.75); 
+    transform-origin: center; 
   }
 </style>

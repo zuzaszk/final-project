@@ -44,26 +44,33 @@
   import { onMount } from 'svelte';
   import { push } from 'svelte-spa-router';
 
-  
   onMount(() => {
-  
     localStorage.removeItem('authToken');
-
     
     setTimeout(() => {
-      
       push('/');
     }, 1000); 
   });
 </script>
 
-<p>Logging out...</p>
+
+<div class="logout-container">
+  <p>Logging out...</p>
+</div>
 
 <style>
+  
+  .logout-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; 
+    min-height: 100vh; 
+  }
+
+
   p {
-    text-align: center;
-    margin-top: 50px;
     font-size: 18px;
     color: #2c3e50;
+    margin-bottom: 300px; 
   }
 </style>
