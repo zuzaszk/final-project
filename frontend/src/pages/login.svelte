@@ -59,10 +59,11 @@
 </script>
 
 
-<div class="flex items-center justify-center w-screen min-h-screen bg-cover bg-center bg-no-repeat relative bg-[url('../pwr4.JPG')]">
+<div class="scaleContainer flex items-center justify-center w-screen min-h-screen bg-cover bg-center bg-no-repeat relative bg-[url('../pwr4.JPG')]">
   <div class="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black opacity-50"></div>
 
-  <div class="relative z-10 flex flex-col sm:flex-row w-full max-w-4xl h-auto bg-white shadow-2xl rounded-2xl overflow-hidden border border-gray-200">
+  <!-- Begin scaling here -->
+  <div class="relative z-10 flex flex-col sm:flex-row w-full max-w-4xl h-auto bg-white shadow-2xl rounded-2xl overflow-hidden border border-gray-200 transform scale-75 origin-center">
     <UsosLogin {handleUsosLogin} />
 
     <div class="w-full sm:w-1/2 bg-gradient-to-br from-gray-800 to-gray-900 text-white p-12 flex flex-col justify-center items-center">
@@ -73,7 +74,6 @@
 
       <LoginForm {loginWithEmail} bind:email bind:password {loading} />
 
-      
       {#if errorMessage}
         <p class="text-red-500 mt-2">{errorMessage}</p>
       {/if}
@@ -85,3 +85,18 @@
     </div>
   </div>
 </div>
+
+<!-- Styling for the scaling effect -->
+<style>
+  .scaleContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Scale the entire card down */
+  .scaleContainer .transform {
+    transform: scale(0.75); /* Scale down to 75% */
+    transform-origin: center; /* Ensure it scales from the center */
+  }
+</style>
