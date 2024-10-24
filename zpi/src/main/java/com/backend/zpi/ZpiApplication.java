@@ -1,4 +1,4 @@
-package edu.pwr.zpi;
+package com.backend.zpi;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 @SpringBootApplication
 @EnableWebSecurity
-@MapperScan("edu.pwr.zpi.mapper")
+@MapperScan("com.backend.zpi.mapper")
 public class ZpiApplication {
 
 	public static void main(String[] args) {

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.zpi.mapper.EvaluationMapper">
+
+    <!-- Retrieve Evaluations/Comments -->
+    <select id="getProjectEvaluations" resultMap="SimpleEvaluationResultMap">
+        SELECT ev.evaluation_id, ev.comment, ev.score, ev.is_public, ev.created_at, u.first_name, u.last_name
+        FROM evaluation ev
+                 JOIN users u ON ev.user_id = u.user_id
+        WHERE ev.project_id = #{projectId}
+    </select>
+
+    <insert id="insertEvaluation" parameterType="com.backend.zpi.entity.Evaluation">
+        INSERT INTO evaluation (project_id, user_id, comment, score, is_public, created_at)
+        VALUES (#{projectId}, #{userId}, #{comment}, #{score}, #{isPublic}, NOW())
+    </insert>
+
+
+    <resultMap id="EvaluationResultMap" type="com.backend.zpi.entity.Evaluation">
+        <id property="evaluationId" column="evaluation_id"/>
+        <result property="projectId" column="project_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="score" column="score"/>
+        <result property="comment" column="comment"/>
+        <result property="state" column="state"/>
+        <result property="isPublic" column="is_public"/>
+        <result property="createdAt" column="created_at"/>
+
+        <!-- Nested user details from the users table (optional to map the users details directly to Evaluation) -->
+        <association property="user" javaType="com.backend.zpi.entity.Users">
+            <result property="firstName" column="first_name"/>
+            <result property="lastName" column="last_name"/>
+        </association>
+    </resultMap>
+
+
+    <resultMap id="SimpleEvaluationResultMap" type="com.backend.zpi.entity.Evaluation">
+        <id property="evaluationId" column="evaluation_id"/>
+        <result property="projectId" column="project_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="score" column="score"/>
+        <result property="comment" column="comment"/>
+        <result property="state" column="state"/>
+        <result property="isPublic" column="is_public"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+</mapper>

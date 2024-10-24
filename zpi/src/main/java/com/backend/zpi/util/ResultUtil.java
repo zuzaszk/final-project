@@ -1,4 +1,4 @@
-package edu.pwr.zpi.util;
+package com.backend.zpi.util;
 
 /**
  *

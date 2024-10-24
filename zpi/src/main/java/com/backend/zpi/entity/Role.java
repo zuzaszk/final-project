@@ -1,4 +1,4 @@
-package edu.pwr.zpi.entity;
+package com.backend.zpi.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

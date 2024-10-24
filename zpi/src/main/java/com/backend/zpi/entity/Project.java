@@ -1,4 +1,4 @@
-package edu.pwr.zpi.entity;
+package com.backend.zpi.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -40,6 +40,8 @@ public class Project implements Serializable {
     private Boolean isArchived;
 
     private Integer year;
+
+    private String technology;
 
 
     private List<Users> users;

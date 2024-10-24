@@ -1,4 +1,4 @@
-package edu.pwr.zpi.util;
+package com.backend.zpi.util;
 
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
@@ -31,7 +31,7 @@ public class CodeGenerator {
 
                 }))
                 .packageConfig(builder -> {
-                    builder.parent("edu.pwr") // 设置父包名
+                    builder.parent("com.backend") // 设置父包名
                             .moduleName("zpi") // 设置父包模块名
                             //默认：实体类放到entity包; mapper接口放到 mapper包，service接口放到 service包下
                             // service接口实现类 service/impl 目录下;contorller控制器类放在controller包下
@@ -39,7 +39,7 @@ public class CodeGenerator {
                             .pathInfo(Collections.singletonMap(OutputFile.xml, System.getProperty("user.dir")+"/src/main/resources/mapper")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("project"); // 设置需要生成的表名
+                    builder.addInclude("evaluation"); // 设置需要生成的表名
                 })
                 .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();

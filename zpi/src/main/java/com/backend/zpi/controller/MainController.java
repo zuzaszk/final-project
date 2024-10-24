@@ -1,4 +1,4 @@
-package edu.pwr.zpi.controller;
+package com.backend.zpi.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
