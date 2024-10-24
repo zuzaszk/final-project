@@ -1,0 +1,3 @@
+[submodule "pop-backend"]
+	path = pop-backend
+	url = https://github.com/zuzaszk/pop-backend
