@@ -1,137 +1,197 @@
 <script>
-    import { onMount } from 'svelte';
-    import { params } from 'svelte-spa-router'; 
-  
-    let projectId = params.id; 
-    let project = null; 
-    let loading = true; 
-    let error = ''; 
-    let newComment = ''; 
-    let submitting = false; 
-    
-    
-    async function fetchProjectDetails() {
-      try {
-        const response = await fetch(`http://localhost:8080/zpi/project/listDetails?id=${projectId}`);
-        if (response.ok) {
-          const data = await response.json();
-          project = data;
-        } else {
-          error = 'Failed to load project details.';
-        }
-      } catch (err) {
-        error = 'Error fetching project details: ' + err.message;
-      } finally {
-        loading = false;
-      }
+  import { onMount } from 'svelte';
+  import { loc } from 'svelte-spa-router'; 
+
+  let projectId = null;
+  let project = {}; 
+  let members = []; 
+  let evaluations = []; 
+  let newComment = '';
+  let submitting = false; 
+  let userId = 1; 
+  let loading = true;
+  let error = '';
+
+
+  $: loc.subscribe(($loc) => {
+    const pathParts = $loc.location.split('/');
+    projectId = pathParts[pathParts.length - 1]; 
+  });
+
+
+  async function fetchProjectDetails() {
+    if (!projectId) {
+      error = 'Project ID is missing';
+      return;
     }
-  
- 
-    async function submitComment() {
-      if (newComment.trim()) {
-        submitting = true;
-        try {
-          const response = await fetch('http://localhost:8080/zpi/project/addComment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              projectId: projectId,
-              author: 'Anonymous', 
-              comment: newComment
-            })
-          });
-  
-          if (response.ok) {
-            const result = await response.json();
-            if (result.success) {
-             
-              project.comments.push({ author: 'Anonymous', text: newComment });
-              newComment = ''; 
-            } else {
-              console.error('Failed to submit comment:', result.message);
-            }
-          } else {
-            console.error('Failed to submit comment: Network issue');
-          }
-        } catch (err) {
-          console.error('Error submitting comment:', err.message);
-        } finally {
-          submitting = false;
-        }
+
+    try {
+      const response = await fetch(`http://192.168.0.102:8080/zpi/project/detail/${projectId}`);
+      if (response.ok) {
+        const data = await response.json();
+        project = data.project || {}; 
+        members = data.members?.filter(member => member.role.roleName === 'student') || []; 
+        evaluations = data.evaluations || [];
+      } else {
+        error = 'Failed to load project details.';
       }
+    } catch (err) {
+      error = 'Error fetching project details: ' + err.message;
+    } finally {
+      loading = false;
     }
-  
-    onMount(() => {
-      fetchProjectDetails(); 
+  }
+
+  async function submitComment() {
+  if (!newComment.trim()) return;
+
+  submitting = true;
+  try {
+    const url = `http://192.168.0.102:8080/zpi/evaluation/add?projectId=${projectId}&userId=${userId}&comment=${encodeURIComponent(newComment)}`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
     });
-  </script>
-  
-  {#if loading}
-    <div class="text-center text-xl text-[#2C3E50]">Loading project details...</div>
-  {:else if error}
-    <div class="text-center text-xl text-red-600">{error}</div>
-  {:else}
-    <div class="container mx-auto p-10 bg-white rounded-lg shadow-lg mt-32 max-w-7xl h-[80vh] overflow-y-auto">
-      <h1 class="text-5xl font-bold text-[#2C3E50] mb-6 -mt-10">{project.title} ({project.acronym})</h1>
-  
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        <div class="lg:col-span-2 space-y-6">
-          <h2 class="text-3xl font-bold text-[#2C3E50] mb-2">Project Description</h2>
-          <p class="text-[#7F8C8D] font-semibold text-lg">{project.description}</p>
-  
-          <h3 class="text-2xl font-bold text-[#2C3E50] mb-2">Technologies Used:</h3>
-          <p class="text-[#7F8C8D] font-semibold text-lg">{project.technologies.join(', ')}</p>
-  
-          <div class="flex space-x-10">
+
+    if (response.ok) {
+      const contentType = response.headers.get('content-type');
+      
+      if (contentType && contentType.includes('application/json')) {
+        const result = await response.json();
+        if (result.success) {
+          newComment = ''; 
+          await fetchProjectDetails(); 
+        } else {
+          console.error('Failed to submit comment:', result.message);
+        }
+      } else {
+        const result = await response.text();
+        console.error('Unexpected response (not JSON):', result);
+      }
+    } else {
+      console.error('Failed to submit comment: Network issue or error response');
+    }
+  } catch (err) {
+    console.error('Error submitting comment:', err.message);
+  } finally {
+    submitting = false;
+  }
+}
+
+
+
+
+  onMount(() => {
+    fetchProjectDetails();
+  });
+</script>
+
+{#if loading}
+  <div class="text-center text-xl text-[#2C3E50]">Loading project details...</div>
+{:else if error}
+  <div class="text-center text-xl text-red-600">{error}</div>
+{:else}
+
+  <div class="container mx-auto p-6 bg-white rounded-lg shadow-lg mt-20 max-w-6xl h-[650px] overflow-hidden">
+    <div class="h-full overflow-y-auto p-4">
+      <div class="flex flex-col lg:flex-row justify-between">
+        <div class="lg:w-2/3">
+          <h1 class="text-4xl font-bold text-[#2C3E50] mb-4">{project.title} ({project.acronym})</h1>
+
+          <!-- Project Description -->
+          <h2 class="text-xl font-bold text-[#2C3E50] mb-2">Project Description</h2>
+          <p class="text-lg text-[#7F8C8D] mb-6">{project.description}</p>
+
+          <!-- Technologies Used -->
+          <h3 class="text-lg font-bold text-[#2C3E50] mb-2">Technologies Used:</h3>
+          <p class="text-[#7F8C8D] font-medium mb-6">{project.technology}</p>
+
+          <!-- Language and Year -->
+          <div class="flex space-x-10 mb-6">
             <div>
-              <h3 class="text-xl font-bold text-[#2C3E50]">Language:</h3>
-              <p class="text-[#7F8C8D] font-semibold">{project.language}</p>
+              <h3 class="text-lg font-bold text-[#2C3E50]">Language:</h3>
+              <p class="text-[#7F8C8D]">{project.language}</p>
             </div>
             <div>
-              <h3 class="text-xl font-bold text-[#2C3E50]">Year:</h3>
-              <p class="text-[#7F8C8D] font-semibold">{project.year}</p>
+              <h3 class="text-lg font-bold text-[#2C3E50]">Year:</h3>
+              <p class="text-[#7F8C8D]">{project.year}</p>
             </div>
           </div>
-  
-          <div class="bg-[#ECF0F1] p-6 rounded-lg">
-            <h2 class="text-2xl font-bold text-[#2C3E50] mb-4">Team Members</h2>
+
+          <!-- Team Members (Filtered to only show students) -->
+          <div class="bg-[#ECF0F1] p-4 rounded-lg mb-6">
+            <h3 class="text-lg font-bold text-[#2C3E50] mb-4">Team Members (Students)</h3>
             <div class="grid grid-cols-2 gap-4">
-              {#each project.teamMembers as member}
+              {#each members as member}
                 <div class="bg-white p-3 border-l-4 border-[#E74C3C] rounded-lg text-[#2C3E50] font-semibold">
-                  {member}
+                  {member.firstName} {member.lastName}
                 </div>
               {/each}
             </div>
           </div>
         </div>
-  
-        <div class="flex justify-center lg:justify-end items-start -mt-20">
-          <img src={project.posterUrl} alt="Project Poster" class="rounded-lg shadow-lg w-full lg:w-auto h-auto max-h-[600px]" />
+
+        <!-- Project Poster -->
+        <div class="lg:w-1/3 lg:pl-6 flex justify-center lg:justify-end">
+          {#if project.posterUrl}
+            <img src={project.posterUrl} alt="Project Poster" class="rounded-lg shadow-lg w-full lg:w-auto h-auto max-h-[600px]" />
+          {/if}
         </div>
       </div>
-  
+
+      <!-- Comments Section -->
       <div class="mt-10">
-        <h2 class="text-3xl font-bold text-[#2C3E50] mb-6">Comments</h2>
-  
-        {#each project.comments as comment}
-          <div class="bg-[#ECF0F1] p-4 rounded-lg mb-4">
-            <strong class="text-[#34495E] font-bold text-lg">{comment.author}:</strong>
-            <span class="text-[#7F8C8D] font-bold ml-2 text-base">{comment.text}</span>
-          </div>
-        {/each}
-  
+        <h2 class="text-2xl font-bold text-[#2C3E50] mb-4">Comments</h2>
+
+        {#if evaluations.length > 0}
+          {#each evaluations as evaluation}
+            <div class="bg-[#ECF0F1] p-4 rounded-lg mb-4">
+              <strong class="text-[#34495E] font-bold text-lg">Comment:</strong> 
+              <p class="text-[#7F8C8D] font-medium">{evaluation.comment}</p>
+            </div>
+          {/each}
+        {:else}
+          <p>No comments available.</p>
+        {/if}
+
+        <!-- Leave a Comment -->
         <div class="mt-6">
-          <h3 class="text-2xl font-bold text-[#2C3E50] mb-4">Leave a Comment</h3>
+          <h3 class="text-xl font-bold text-[#2C3E50] mb-4">Leave a Comment</h3>
           <textarea
             bind:value={newComment}
             placeholder="Write your comment here..."
-            class="w-full h-28 p-3 border border-gray-300 rounded-lg mb-4 bg-white text-gray-800 font-semibold"
+            class="w-full h-24 p-3 border border-gray-300 rounded-lg mb-4 bg-white text-gray-800 font-semibold"
           ></textarea>
-          <button on:click={submitComment} class="bg-[#E74C3C] text-white font-semibold py-2 px-6 rounded-lg hover:bg-[#C0392B]" disabled={submitting}>
+          <button on:click={submitComment} class="bg-[#E74C3C] text-white font-semibold py-3 px-6 rounded-lg hover:bg-[#C0392B]" disabled={submitting}>
             {submitting ? 'Submitting...' : 'Submit Comment'}
           </button>
         </div>
       </div>
     </div>
-  {/if}
-  
+  </div>
+{/if}
+
+<style>
+  .container {
+    max-width: 1200px;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+    }
+
+    h2, h3 {
+      font-size: 1.25rem;
+    }
+
+    p, span {
+      font-size: 0.875rem;
+    }
+  }
+</style>
