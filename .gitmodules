@@ -1,3 +1,6 @@
 [submodule "pop-backend"]
 	path = pop-backend
 	url = https://github.com/zuzaszk/pop-backend
+[submodule "pop-frontend"]
+	path = pop-frontend
+	url = https://github.com/zuzaszk/pop-frontend.git
