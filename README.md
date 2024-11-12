@@ -17,7 +17,7 @@ git clone https://github.com/zuzaszk/pop-backend
 ```
 OR
 ```
-https://github.com/zuzaszk/pop-frontend
+git clone https://github.com/zuzaszk/pop-frontend
 ```
 ## COMMITTING CHANGES
 TO COMMIT CHANGES, YOU HAVE TO:
