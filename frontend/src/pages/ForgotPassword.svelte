@@ -5,32 +5,33 @@
     let successMessage = "";
   
     async function handleForgotPassword() {
-      try {
-        loading = true;
-       
-        const response = await fetch('https://localhost:8080/forgot-password', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email })
-        });
-  
-        const data = await response.json();
-  
-        if (response.ok) {
-          successMessage = "A password reset link has been sent to your email.";
-          errorMessage = "";
-        } else {
-          errorMessage = data.message || "Something went wrong. Please try again.";
-          successMessage = "";
-        }
-      } catch (error) {
-        errorMessage = "An error occurred. Please try again.";
-      } finally {
-        loading = false;
-      }
+  try {
+    loading = true;
+   
+    const response = await fetch('http://localhost:8080/forgot-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      successMessage = "A password reset link has been sent to your email.";
+      errorMessage = "";
+    } else {
+      errorMessage = data.message || "Something went wrong. Please try again.";
+      successMessage = "";
     }
+  } catch (error) {
+    errorMessage = "An error occurred. Please try again.";
+  } finally {
+    loading = false;
+  }
+}
+
   </script>
   
   

@@ -8,16 +8,18 @@
 
 
   let currentPath = '';
-
+  let role = 'student';
 
   $: currentPath = $location;
+
+  
 
 </script>
 
 <main class="bg-[#F7F9F9] min-h-screen flex flex-col">
   
   {#if currentPath !== '/login' && currentPath !== '/signup' && currentPath !== '/forgot-password' && currentPath!='/' && currentPath!='/reset-password'}
-    <Header />
+    <Header {role} />
   {/if}
 
 

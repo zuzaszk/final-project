@@ -2,26 +2,32 @@ import Login from './pages/login.svelte';
 import Signup from './pages/signup.svelte';
 import ForgotPassword from './pages/ForgotPassword.svelte';
 import ResetPassword from './pages/ResetPassword.svelte';
-import UsosCallback from './pages/UsosCallback.svelte';
-import GoogleCallback from './pages/GoogleCallback.svelte';
-import FacebookCallback from './pages/FacebookCallback.svelte';
 import StudentDashboard from './pages/StudentDashboard.svelte';
 import UploadProject from './pages/UploadProject.svelte'; 
 import Logout from './pages/Logout.svelte';
 import Projects from './pages/Projects.svelte';
 import ProjectDetails from './pages/ProjectDetails.svelte';
+import CreateProject from './pages/chair/CreateProject.svelte';
+import CreateEdition from './pages/chair/CreateEdition.svelte';
+import ConstantProject from './pages/student/ConstantProject.svelte';
+import DynamicProject from './pages/student/DynamicProject.svelte';
+import ViewProject from './pages/student/ViewProject.svelte';
+
 
 export const routes = {
   '/': Login,
   '/signup': Signup,
   '/forgot-password': ForgotPassword,
-  '/reset-password': ResetPassword,  
-  '/usos-callback': UsosCallback,
-  '/google-callback': GoogleCallback,
-  '/facebook-callback': FacebookCallback,
-  '/dashboard': StudentDashboard, 
-  '/projects': Projects,  
-  '/upload': UploadProject,
-  '/logout': Logout, 
-  '/projects/:id': ProjectDetails, 
+  '/reset-password': ResetPassword,
+  '/dashboard': StudentDashboard,
+  '/projects': Projects,
+  '/upload-project': UploadProject,  
+  '/logout': Logout,
+  '/projects/:id': ProjectDetails,
+  '/create-project': CreateProject,     
+  '/create-edition': CreateEdition,    
+  '/my-projects/constant': ConstantProject,
+  '/my-projects/dynamic': DynamicProject,
+  '/my-projects/view': ViewProject, 
+  
 };

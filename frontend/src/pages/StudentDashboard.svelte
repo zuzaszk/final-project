@@ -1,23 +1,28 @@
 <script>
+  import { onMount } from 'svelte';
+
+  let userName = '';
+
+  
+  onMount(() => {
     
-  </script>
-  
-  <div class="p-8">
-    <h1 class="text-3xl font-bold mb-6">Student Dashboard</h1>
-    <p>Welcome to your student dashboard!</p>
-  
-    
-    <div class="mt-8">
-      <h2 class="text-2xl font-semibold">Your Projects</h2>
-      
-      <p>You haven't submitted any projects yet.</p>
-    </div>
-  </div>
-  
-  <style>
-    div {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-  </style>
-  
+    const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
+    userName = urlParams.get('name') || 'User';
+  });
+</script>
+
+<div class="message">
+  <h1>Welcome to your Dashboard</h1>
+  <p>You are logged in as <span>{userName}</span>.</p>
+  <a href="/logout">Logout</a>
+</div>
+
+<style>
+  .message {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+</style>

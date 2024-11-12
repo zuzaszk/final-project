@@ -2,44 +2,81 @@
   import { onMount } from 'svelte';
   import { push } from 'svelte-spa-router';
 
+  let loading = false;
+  let errorMessage = '';
 
-  onMount(async () => {
-  
-    localStorage.removeItem('authToken');
 
-    
+  async function logout() {
     try {
+      loading = true;
+
+
       const response = await fetch('http://localhost:8080/logout', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        credentials: 'include', 
       });
 
+    
       if (response.ok) {
-        console.log('Successfully logged out from the backend');
+       
+        push('/');
       } else {
-        console.error('Failed to log out from the backend');
+        errorMessage = 'Logout failed. Please try again.';
       }
     } catch (error) {
-      console.error('Error during logout:', error);
+      errorMessage = 'An error occurred during logout. Please try again later.';
+    } finally {
+      loading = false;
     }
+  }
 
-   
-    push('/login');
-  });
+  
+  onMount(logout);
 </script>
 
-<p>Logging out...</p>
+<div class="logout-container">
+  {#if loading}
+    <p>Logging you out...</p>
+  {:else if errorMessage}
+    <p class="error">{errorMessage}</p>
+    <button on:click={logout}>Try Again</button>
+  {/if}
+</div>
 
 <style>
-  p {
+  .logout-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
     text-align: center;
-    margin-top: 50px;
-    font-size: 18px;
-    color: #2c3e50;
   }
-</style> -->
+
+  .error {
+    color: red;
+    margin-bottom: 1em;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #e63946;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #d62828;
+  }
+</style>
+ -->
+
+
+
+
 <script>
   import { onMount } from 'svelte';
   import { push } from 'svelte-spa-router';

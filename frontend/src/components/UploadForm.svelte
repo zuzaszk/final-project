@@ -1,119 +1,151 @@
 <script>
-  let projectName = '';
-  let description = '';
-  let year = '';
-  let language = '';
+  import { onMount } from 'svelte';
+
+  export let isEditMode = false;
+  export let project = null;
+
+  // Mock data for testing
+  let projectName = 'Mock Project Name';
+  let description = 'Mock project description';
+  let shortDescription = 'Mock short description';
+  let year = '2024';
+  let language = 'EN';
+  let sourceCodeFile = null;
+  let reportFile = null;
   let posterFile = null;
-  let projectFile = null;
+  let testCaseFile = null;
+  let posterPreviewUrl = '';
 
-  function handlePosterUpload(event) {
-    posterFile = event.target.files[0];
-  }
-
-  function handleProjectFileUpload(event) {
-    projectFile = event.target.files[0];
+  function handleFileUpload(event, type) {
+    const file = event.target.files[0];
+    if (type === 'poster') {
+      posterFile = file;
+      posterPreviewUrl = file ? URL.createObjectURL(file) : '';
+    } else if (type === 'sourceCode') {
+      sourceCodeFile = file;
+    } else if (type === 'report') {
+      reportFile = file;
+    } else if (type === 'testCase') {
+      testCaseFile = file;
+    }
   }
 
   function submitForm() {
-    console.log({ projectName, description, year, language, posterFile, projectFile });
+    const formData = {
+      projectName,
+      description,
+      shortDescription,
+      year,
+      language,
+      sourceCodeFile: sourceCodeFile ? sourceCodeFile.name : null,
+      reportFile: reportFile ? reportFile.name : null,
+      posterFile: posterFile ? posterFile.name : null,
+      testCaseFile: testCaseFile ? testCaseFile.name : null,
+    };
+    console.log("Form Data:", formData);
+    alert("Mock submission successful!");
   }
 </script>
 
-<div class="max-w-5xl mx-auto bg-white p-8 md:p-10 rounded-lg shadow-md"> 
-  <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 text-center">Upload Your Final Project</h2>
+<div class="min-h-screen bg-[#F7F9F9] pt-24 pb-12 flex justify-center items-center">
+  <div class="container max-w-3xl bg-white p-10 md:p-12 rounded-lg shadow-md">
+    <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+      {isEditMode ? 'Edit Your Project' : 'Upload Your Final Project'}
+    </h2>
 
-  <div class="mb-6">
-    <label for="projectName" class="block text-lg text-gray-800 mb-2">Project Name</label>
-    <input
-      id="projectName"
-      type="text"
-      bind:value={projectName}
-      class="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-800" 
-      placeholder="Enter your project name"
-    />
-  </div>
+    <!-- Mandatory Information Section -->
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">Mandatory Information</h3>
+    <div class="grid grid-cols-2 gap-6 mb-8">
+      <!-- Description -->
+      <div class="upload-box" on:click={() => document.getElementById('description').focus()}>
+        <input id="description" type="text" bind:value={description} class="hidden" />
+        <label class="upload-label"><span>📝</span> Description</label>
+      </div>
 
-  <div class="mb-6">
-    <label for="description" class="block text-lg text-gray-800 mb-2">Project Description</label>
-    <textarea
-      id="description"
-      bind:value={description}
-      rows="5"
-      class="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-800" 
-      placeholder="Describe your project"
-    ></textarea>
-  </div>
+      <!-- Short Description -->
+      <div class="upload-box" on:click={() => document.getElementById('shortDescription').focus()}>
+        <input id="shortDescription" type="text" bind:value={shortDescription} class="hidden" />
+        <label class="upload-label"><span>🔠</span> Short Description</label>
+      </div>
 
-  <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div>
-      <label for="year" class="block text-lg text-gray-800 mb-2">Year</label>
-      <select
-        id="year"
-        bind:value={year}
-        class="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-800" 
-      >
-        <option value="">Select Year</option>
-        <option value="2025">2025</option>
-        <option value="2024">2024</option>
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-      </select>
+      <!-- Source Code -->
+      <div class="upload-box" on:click={() => document.getElementById('sourceCode').click()}>
+        <input id="sourceCode" type="file" accept=".zip,.rar" on:change={(e) => handleFileUpload(e, 'sourceCode')} class="hidden" />
+        <label class="upload-label"><span>🛠️</span> Source Code</label>
+      </div>
+
+      <!-- Report -->
+      <div class="upload-box" on:click={() => document.getElementById('report').click()}>
+        <input id="report" type="file" accept=".pdf" on:change={(e) => handleFileUpload(e, 'report')} class="hidden" />
+        <label class="upload-label"><span>📄</span> Report</label>
+      </div>
     </div>
 
-    <div>
-      <label for="language" class="block text-lg text-gray-800 mb-2">Language</label>
-      <select
-        id="language"
-        bind:value={language}
-        class="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-800"
+    <!-- Optional Information Section -->
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">Optional Information</h3>
+    <div class="grid grid-cols-2 gap-6 mb-8">
+      <!-- Poster -->
+      <div class="upload-box" on:click={() => document.getElementById('poster').click()}>
+        <input id="poster" type="file" accept="image/*" on:change={(e) => handleFileUpload(e, 'poster')} class="hidden" />
+        <label class="upload-label"><span>🖼️</span> Poster</label>
+      </div>
+
+      <!-- Test Case -->
+      <div class="upload-box" on:click={() => document.getElementById('testCase').click()}>
+        <input id="testCase" type="file" accept=".pdf,.zip" on:change={(e) => handleFileUpload(e, 'testCase')} class="hidden" />
+        <label class="upload-label"><span>🎯</span> Test Case</label>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="mt-8 text-center">
+      <button
+        on:click={submitForm}
+        class="submit-button bg-[#E74C3C] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#C0392B] transition-all duration-300"
       >
-        <option value="">Select Language</option>
-        <option value="EN">English</option>
-        <option value="PL">Polish</option>
-      </select>
+        Submit Project
+      </button>
     </div>
   </div>
-
-  <div class="mb-6 bg-[#ECF0F1] p-6 rounded-lg border-2 border-dashed border-gray-400 text-center cursor-pointer">
-    <label for="poster" class="block text-lg text-gray-600">Click to Upload Project Poster</label>
-    <input
-      id="poster"
-      type="file"
-      accept="image/*"
-      on:change={handlePosterUpload}
-      class="hidden"
-    />
-  </div>
-
-  <div class="mb-6">
-    <label for="projectFile" class="block text-lg text-gray-800 mb-2">Upload Project Files</label>
-    <input
-      id="projectFile"
-      type="file"
-      accept=".pdf,.zip"
-      on:change={handleProjectFileUpload}
-      class="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-800"  
-    />
-  </div>
-
-  <button
-    on:click={submitForm}
-    class="w-full bg-[#E74C3C] text-white font-bold py-3 px-4 rounded-lg hover:bg-[#C0392B] transition-all duration-300"
-  >
-    Submit Project
-  </button>
 </div>
 
 <style>
   .container {
-    padding-top: 100px; 
+    max-width: 800px;
+  }
+  
+  .upload-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    border: 2px dashed #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s;
+  }
+  
+  .upload-box:hover {
+    background-color: #f5f5f5;
   }
 
+  .upload-label {
+    color: #333;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
   
-  @media (max-width: 768px) {
-    
-    .form-container {
-      padding: 0 1rem;
-    }
+  .upload-label span {
+    font-size: 1.5rem; /* Icon size */
+  }
+  
+  .submit-button {
+    width: 100%;
   }
 </style>

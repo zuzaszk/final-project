@@ -31,7 +31,7 @@
     }
 
     try {
-      const response = await fetch(`http://192.168.0.102:8080/zpi/project/detail/${projectId}`);
+      const response = await fetch(`http://192.168.0.102:8080/zpi/project/basicInfo?projectId=${projectId}`);
       if (response.ok) {
         const data = await response.json();
         project = data.project || {}; 

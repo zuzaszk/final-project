@@ -15,37 +15,38 @@
     });
   
     async function resetPassword() {
-      if (newPassword !== confirmPassword) {
-        errorMessage = "Passwords do not match.";
-        return;
-      }
-  
-      try {
-        loading = true;
-        const response = await fetch('https://localhost:8080/reset-password', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ token, newPassword })
-        });
-  
-        const data = await response.json();
-  
-        if (response.ok) {
-          successMessage = "Password reset successfully. Redirecting to login...";
-          setTimeout(() => {
-            push('/');
-          }, 3000); 
-        } else {
-          errorMessage = data.message || "Failed to reset password. Please try again.";
-        }
-      } catch (error) {
-        errorMessage = "An error occurred. Please try again.";
-      } finally {
-        loading = false;
-      }
+  if (newPassword !== confirmPassword) {
+    errorMessage = "Passwords do not match.";
+    return;
+  }
+
+  try {
+    loading = true;
+    const response = await fetch('http://localhost:8080/reset-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token, newPassword }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      successMessage = "Password reset successfully. Redirecting to login...";
+      setTimeout(() => {
+        push('/');
+      }, 3000);
+    } else {
+      errorMessage = data.message || "Failed to reset password. Please try again.";
     }
+  } catch (error) {
+    errorMessage = "An error occurred. Please try again.";
+  } finally {
+    loading = false;
+  }
+}
+
   </script>
   
   
