@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
   import { onMount } from 'svelte';
   import { loc } from 'svelte-spa-router'; 
 
@@ -25,27 +25,33 @@
   });
 
   async function fetchProjectDetails() {
-    if (!projectId) {
-      error = 'Project ID is missing';
-      return;
-    }
-
-    try {
-      const response = await fetch(`http://192.168.0.102:8080/zpi/project/basicInfo?projectId=${projectId}`);
-      if (response.ok) {
-        const data = await response.json();
-        project = data.project || {}; 
-        members = data.members?.filter(member => member.role.roleName === 'student') || []; 
-        evaluations = data.evaluations || [];
-      } else {
-        error = 'Failed to load project details.';
-      }
-    } catch (err) {
-      error = 'Error fetching project details: ' + err.message;
-    } finally {
-      loading = false;
-    }
+  if (!projectId) {
+    error = 'Project ID is missing';
+    return;
   }
+
+  try {
+    console.log(`Fetching project details for Project ID: ${projectId}`);
+    const response = await fetch(`http://192.168.0.102:8080/zpi/project/basicInfo?projectId=${projectId}`);
+    
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Fetched project data:', data); // Log the raw data
+      project = data; // Assign directly if data is already the project object
+      members = project.userRole?.filter(member => member.roles?.roleName === 'student') || [];
+
+      evaluations = data.evaluations || [];
+    } else {
+      error = 'Failed to load project details.';
+    }
+  } catch (err) {
+    error = 'Error fetching project details: ' + err.message;
+    console.error('Fetch error:', err); // Detailed error log
+  } finally {
+    loading = false;
+  }
+}
+
 
   async function submitComment() {
   if (!newComment.trim()) return;
@@ -108,19 +114,16 @@
         <div class="lg:w-2/3">
           <h1 class="text-4xl font-bold text-[#2C3E50] mb-4">{project.title} ({project.acronym})</h1>
 
-          <!-- Project Description -->
           <h2 class="text-xl font-bold text-[#2C3E50] mb-2">Project Description</h2>
           <p class="text-lg text-[#7F8C8D] mb-6">{project.description}</p>
 
-          <!-- Technologies Used -->
           <h3 class="text-lg font-bold text-[#2C3E50] mb-2">Technologies Used:</h3>
           <p class="text-[#7F8C8D] font-medium mb-6">{project.technology}</p>
 
-          <!-- Language and Year -->
           <div class="flex space-x-10 mb-6">
             <div>
               <h3 class="text-lg font-bold text-[#2C3E50]">Language:</h3>
-              <p class="text-[#7F8C8D]">{getLanguageName(project.language)}</p> <!-- Display language -->
+              <p class="text-[#7F8C8D]">{getLanguageName(project.language)}</p> 
             </div>
             <div>
               <h3 class="text-lg font-bold text-[#2C3E50]">Year:</h3>
@@ -128,7 +131,6 @@
             </div>
           </div>
 
-          <!-- Team Members (Filtered to only show students) -->
           <div class="bg-[#ECF0F1] p-4 rounded-lg mb-6">
             <h3 class="text-lg font-bold text-[#2C3E50] mb-4">Team Members</h3>
             <div class="grid grid-cols-2 gap-4">
@@ -141,10 +143,221 @@
           </div>
         </div>
 
-        <!-- Project Poster -->
         <div class="lg:w-1/3 lg:pl-6 flex justify-center lg:justify-end">
           {#if project.posterUrl}
             <img src={project.posterUrl} alt="Project Poster" class="rounded-lg shadow-lg w-full lg:w-auto h-auto max-h-[600px]" />
+          {/if}
+        </div>
+      </div>
+
+      <div class="mt-10">
+        <h2 class="text-2xl font-bold text-[#2C3E50] mb-4">Comments</h2>
+
+        {#if evaluations.length > 0}
+          {#each evaluations as evaluation}
+            <div class="bg-[#ECF0F1] p-4 rounded-lg mb-4">
+              <strong class="text-[#34495E] font-bold text-lg">Comment:</strong> 
+              <p class="text-[#7F8C8D] font-medium">{evaluation.comment}</p>
+            </div>
+          {/each}
+        {:else}
+          <p>No comments available.</p>
+        {/if}
+
+        <div class="mt-6">
+          <h3 class="text-xl font-bold text-[#2C3E50] mb-4">Leave a Comment</h3>
+          <textarea
+            bind:value={newComment}
+            placeholder="Write your comment here..."
+            class="w-full h-24 p-3 border border-gray-300 rounded-lg mb-4 bg-white text-gray-800 font-semibold"
+          ></textarea>
+          <button on:click={submitComment} class="bg-[#E74C3C] text-white font-semibold py-3 px-6 rounded-lg hover:bg-[#C0392B]" disabled={submitting}>
+            {submitting ? 'Submitting...' : 'Submit Comment'}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{/if}
+
+
+<style>
+  .zoom-container {
+    transform: scale(0.9);  
+    transform-origin: center; 
+  }
+
+  .container {
+    max-width: 1200px;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+    }
+
+    h2, h3 {
+      font-size: 1.25rem;
+    }
+
+    p, span {
+      font-size: 0.875rem;
+    }
+  }
+</style> -->
+<script>
+  import { onMount } from 'svelte';
+  import { loc } from 'svelte-spa-router';
+
+  let projectId = null;
+  let project = {};
+  let members = [];
+  let evaluations = [];
+  let newComment = '';
+  let submitting = false;
+  let loading = true;
+  let error = '';
+  let posterUrl = ''; // URL to display the poster
+
+  // Get language name from code
+  function getLanguageName(languageCode) {
+    return languageCode === 1 ? 'English' : languageCode === 2 ? 'Polish' : 'Unknown';
+  }
+
+  // Subscribe to the URL path to get the project ID
+  $: loc.subscribe(($loc) => {
+    const pathParts = $loc.location.split('/');
+    projectId = pathParts[pathParts.length - 1];
+  });
+
+  // Fetch project details from the backend API
+  async function fetchProjectDetails() {
+    if (!projectId) {
+      error = 'Project ID is missing';
+      loading = false;
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://192.168.0.102:8080/zpi/project/basicInfo?projectId=${projectId}`);
+      if (response.ok) {
+        const data = await response.json();
+        
+        project = data;
+        members = project.userRole?.filter(member => member.roles?.roleName === 'student') || [];
+        evaluations = project.evaluations || [];
+
+        // Fetch the poster using a hardcoded element ID (e.g., 12)
+        fetchPoster(12); // Replace 12 with the actual known element_id for the poster
+      } else {
+        error = 'Failed to load project details.';
+      }
+    } catch (err) {
+      error = `Error fetching project details: ${err.message}`;
+    } finally {
+      loading = false;
+    }
+  }
+
+  // Fetch poster image using projectElementId
+  async function fetchPoster(projectElementId) {
+    try {
+      const response = await fetch(`http://192.168.0.102:8080/zpi/projectElements/retrieve?projectElementId=${projectElementId}`);
+      if (response.ok) {
+        posterUrl = response.url; // Using the URL directly
+      } else {
+        console.error('Failed to fetch poster image.');
+      }
+    } catch (err) {
+      console.error(`Error fetching poster image: ${err.message}`);
+    }
+  }
+
+  // Submit a new comment to the backend
+  async function submitComment() {
+    if (!newComment.trim()) return;
+
+    submitting = true;
+    try {
+      const url = `http://192.168.0.102:8080/zpi/evaluation/add?projectId=${projectId}&comment=${encodeURIComponent(newComment)}`;
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (response.ok) {
+        newComment = '';  // Clear the input
+        await fetchProjectDetails();  // Refresh comments
+      } else {
+        console.error('Failed to submit comment');
+      }
+    } catch (err) {
+      console.error(`Error submitting comment: ${err.message}`);
+    } finally {
+      submitting = false;
+    }
+  }
+
+  onMount(fetchProjectDetails);
+</script>
+
+<!-- Loading or Error Display -->
+{#if loading}
+  <div class="text-center text-xl text-[#2C3E50]">Loading project details...</div>
+{:else if error}
+  <div class="text-center text-xl text-red-600">{error}</div>
+{:else}
+
+  <!-- Project Details Display -->
+  <div class="zoom-container container mx-auto p-6 bg-white rounded-lg shadow-lg mt-20 max-w-6xl h-[650px] overflow-hidden">
+    <div class="h-full overflow-y-auto p-4">
+      <div class="flex flex-col lg:flex-row justify-between">
+        <!-- Project Information -->
+        <div class="lg:w-2/3">
+          <h1 class="text-4xl font-bold text-[#2C3E50] mb-4">{project.title} ({project.acronym || "N/A"})</h1>
+
+          <!-- Project Description -->
+          <h2 class="text-xl font-bold text-[#2C3E50] mb-2">Project Description</h2>
+          <p class="text-lg text-[#7F8C8D] mb-6">{project.description || "No description available."}</p>
+
+          <!-- Technologies Used -->
+          <h3 class="text-lg font-bold text-[#2C3E50] mb-2">Technologies Used:</h3>
+          <p class="text-[#7F8C8D] font-medium mb-6">{project.keywords || "Not specified"}</p>
+
+          <!-- Language and Year -->
+          <div class="flex space-x-10 mb-6">
+            <div>
+              <h3 class="text-lg font-bold text-[#2C3E50]">Language:</h3>
+              <p class="text-[#7F8C8D]">{getLanguageName(project.language)}</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-[#2C3E50]">Year:</h3>
+              <p class="text-[#7F8C8D]">{project.year || "Not specified"}</p>
+            </div>
+          </div>
+
+          <!-- Team Members -->
+          <div class="bg-[#ECF0F1] p-4 rounded-lg mb-6">
+            <h3 class="text-lg font-bold text-[#2C3E50] mb-4">Team Members</h3>
+            <div class="grid grid-cols-2 gap-4">
+              {#each members as member}
+                <div class="bg-white p-3 border-l-4 border-[#E74C3C] rounded-lg text-[#2C3E50] font-semibold">
+                  {member.users.firstName} {member.users.lastName}
+                </div>
+              {/each}
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Poster -->
+        <div class="lg:w-1/3 lg:pl-6 flex justify-center lg:justify-end">
+          {#if posterUrl}
+            <img src={posterUrl} alt="Project Poster" class="rounded-lg shadow-lg w-full lg:w-auto h-auto max-h-[600px]" />
           {/if}
         </div>
       </div>
@@ -172,7 +385,7 @@
             placeholder="Write your comment here..."
             class="w-full h-24 p-3 border border-gray-300 rounded-lg mb-4 bg-white text-gray-800 font-semibold"
           ></textarea>
-          <button on:click={submitComment} class="bg-[#E74C3C] text-white font-semibold py-3 px-6 rounded-lg hover:bg-[#C0392B]" disabled={submitting}>
+          <button on:click={submitComment} class="bg-[#E74C3E] text-white font-semibold py-3 px-6 rounded-lg hover:bg-[#C0392B]" disabled={submitting}>
             {submitting ? 'Submitting...' : 'Submit Comment'}
           </button>
         </div>
@@ -181,15 +394,15 @@
   </div>
 {/if}
 
-
 <style>
   .zoom-container {
-    transform: scale(0.9);  
+    transform: scale(0.85);  
     transform-origin: center; 
   }
 
   .container {
     max-width: 1200px;
+    height:700px;
   }
 
   @media (max-width: 768px) {

@@ -268,6 +268,7 @@
   <style>
     .container {
       max-width: 100%;
+      transform: scale(0.9);  
     }
   
     .bg-white {

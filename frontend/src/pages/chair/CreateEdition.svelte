@@ -116,6 +116,9 @@
   </div>
   
   <style>
+    .container{
+        transform: scale(0.9);  
+    }
     .bg-white {
       background-color: #ffffff;
     }

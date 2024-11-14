@@ -7,19 +7,23 @@
     let showModal = true;
     const dispatch = createEventDispatcher();
 
-    let softDeadline = '';
-    let hardDeadline = '';
+    let softDeadline = ''; // Placeholder for fetched softDeadline
+    let hardDeadline = ''; // Placeholder for fetched hardDeadline
 
+    // Get the project ID and element type ID
     const projectId = get(currentProjectId);
-    const elementTypeId = 4; // Element type ID for Poster
+    const elementTypeId = 7; // Assuming 1 is for Logo
 
+    // Function to close the modal
     function onClose() {
         showModal = false;
-        dispatch('close');
+        dispatch('close'); // Dispatch close event to parent
     }
 
+    // Function to handle file upload
     async function onUpload(event) {
         const file = event.detail.file;
+
         const formData = new FormData();
         formData.append('file', file);
         formData.append('projectId', projectId);
@@ -32,20 +36,22 @@
             });
 
             if (response.ok) {
-                console.log("File uploaded successfully for Poster");
+                console.log("File uploaded successfully for Roadmap");
                 dispatch('upload', { success: true });
                 showModal = false;
             } else {
-                console.error("Failed to upload file for Poster");
+                console.error("Failed to upload file");
             }
         } catch (error) {
             console.error("Error uploading file:", error);
         }
     }
 
+    // Fetch deadlines on component mount
     onMount(async () => {
         try {
             const response = await fetch(`http://192.168.0.102:8080/zpi/deadlines/getDeadlineByProjectIdAndElementTypeId?projectId=${projectId}&elementTypeId=${elementTypeId}`);
+
             if (response.ok) {
                 const data = await response.json();
                 softDeadline = data.softDeadline;
@@ -61,8 +67,8 @@
 
 {#if showModal}
     <ModalTemplate 
-        title="Upload Poster" 
-        description="Upload your poster (jpg, png)" 
+        title="Upload Roadmap" 
+        description="Upload your roadmap (jpg, png)" 
         supportedFormats="jpg, png"
         softDeadline={softDeadline} 
         hardDeadline={hardDeadline} 

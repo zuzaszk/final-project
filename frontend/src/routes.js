@@ -12,6 +12,9 @@ import CreateEdition from './pages/chair/CreateEdition.svelte';
 import ConstantProject from './pages/student/ConstantProject.svelte';
 import DynamicProject from './pages/student/DynamicProject.svelte';
 import ViewProject from './pages/student/ViewProject.svelte';
+import Evaluations from './pages/supervisor/Evaluations.svelte';
+import EvaluationPage from './pages/supervisor/EvaluationPage.svelte';
+
 
 
 export const routes = {
@@ -29,5 +32,7 @@ export const routes = {
   '/my-projects/constant': ConstantProject,
   '/my-projects/dynamic': DynamicProject,
   '/my-projects/view': ViewProject, 
+  '/evaluations': Evaluations,
+  '/evaluations/:id': EvaluationPage,
   
 };

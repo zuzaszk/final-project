@@ -89,9 +89,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    
   }
   .scaleContainer .transform {
-    transform: scale(0.75); 
+    transform: scale(0.65); 
     transform-origin: center; 
+    
   }
+
+ 
 </style>
