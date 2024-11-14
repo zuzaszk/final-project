@@ -337,8 +337,8 @@
         max-height: 80vh;
         overflow-y: auto;
         padding: 1.5rem;
-        margin-top: 80px; /* Increased margin to push container lower */
-        margin-bottom: 20px; /* Added bottom margin for spacing */
+        margin-top: 80px; 
+        margin-bottom: 20px; 
     }
 
     .input-field {
@@ -364,13 +364,13 @@
         font-weight: bold;
     }
 
-    /* Mobile adjustments */
+  
     @media (max-width: 640px) {
         .container {
             max-width: 95%; 
             max-height: 75vh; 
             padding: 1rem;
-            margin-top: 90px; /* Smaller margin on mobile */
+            margin-top: 90px; 
         }
     }
 </style>

@@ -221,20 +221,20 @@
   let submitting = false;
   let loading = true;
   let error = '';
-  let posterUrl = ''; // URL to display the poster
+  let posterUrl = ''; 
 
-  // Get language name from code
+  
   function getLanguageName(languageCode) {
     return languageCode === 1 ? 'English' : languageCode === 2 ? 'Polish' : 'Unknown';
   }
 
-  // Subscribe to the URL path to get the project ID
+  
   $: loc.subscribe(($loc) => {
     const pathParts = $loc.location.split('/');
     projectId = pathParts[pathParts.length - 1];
   });
 
-  // Fetch project details from the backend API
+
   async function fetchProjectDetails() {
     if (!projectId) {
       error = 'Project ID is missing';
@@ -251,8 +251,8 @@
         members = project.userRole?.filter(member => member.roles?.roleName === 'student') || [];
         evaluations = project.evaluations || [];
 
-        // Fetch the poster using a hardcoded element ID (e.g., 12)
-        fetchPoster(12); // Replace 12 with the actual known element_id for the poster
+       
+        fetchPoster(12); 
       } else {
         error = 'Failed to load project details.';
       }
@@ -263,12 +263,12 @@
     }
   }
 
-  // Fetch poster image using projectElementId
+
   async function fetchPoster(projectElementId) {
     try {
       const response = await fetch(`http://192.168.0.102:8080/zpi/projectElements/retrieve?projectElementId=${projectElementId}`);
       if (response.ok) {
-        posterUrl = response.url; // Using the URL directly
+        posterUrl = response.url; 
       } else {
         console.error('Failed to fetch poster image.');
       }
@@ -277,7 +277,7 @@
     }
   }
 
-  // Submit a new comment to the backend
+
   async function submitComment() {
     if (!newComment.trim()) return;
 
@@ -291,8 +291,8 @@
       });
 
       if (response.ok) {
-        newComment = '';  // Clear the input
-        await fetchProjectDetails();  // Refresh comments
+        newComment = ''; 
+        await fetchProjectDetails(); 
       } else {
         console.error('Failed to submit comment');
       }
@@ -306,18 +306,18 @@
   onMount(fetchProjectDetails);
 </script>
 
-<!-- Loading or Error Display -->
+
 {#if loading}
   <div class="text-center text-xl text-[#2C3E50]">Loading project details...</div>
 {:else if error}
   <div class="text-center text-xl text-red-600">{error}</div>
 {:else}
 
-  <!-- Project Details Display -->
+
   <div class="zoom-container container mx-auto p-6 bg-white rounded-lg shadow-lg mt-20 max-w-6xl h-[650px] overflow-hidden">
     <div class="h-full overflow-y-auto p-4">
       <div class="flex flex-col lg:flex-row justify-between">
-        <!-- Project Information -->
+        
         <div class="lg:w-2/3">
           <h1 class="text-4xl font-bold text-[#2C3E50] mb-4">{project.title} ({project.acronym || "N/A"})</h1>
 

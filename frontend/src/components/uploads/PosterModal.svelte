@@ -11,7 +11,7 @@
     let hardDeadline = '';
 
     const projectId = get(currentProjectId);
-    const elementTypeId = 4; // Element type ID for Poster
+    const elementTypeId = 4; 
 
     function onClose() {
         showModal = false;

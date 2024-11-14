@@ -11,7 +11,7 @@
     let hardDeadline = '';
 
     const projectId = get(currentProjectId);
-    const elementTypeId = 6; // Element type ID for Thesis
+    const elementTypeId = 6; 
 
     function onClose() {
         showModal = false;

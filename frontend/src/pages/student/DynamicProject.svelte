@@ -378,7 +378,7 @@
     }
 
     .upload-grid {
-      grid-template-columns: 1fr 1fr 1fr; /* Three items per row for larger screens */
+      grid-template-columns: 1fr 1fr 1fr;
     }
   }
 </style>

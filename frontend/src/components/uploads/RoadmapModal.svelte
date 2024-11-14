@@ -7,20 +7,20 @@
     let showModal = true;
     const dispatch = createEventDispatcher();
 
-    let softDeadline = ''; // Placeholder for fetched softDeadline
-    let hardDeadline = ''; // Placeholder for fetched hardDeadline
+    let softDeadline = ''; 
+    let hardDeadline = '';
 
-    // Get the project ID and element type ID
+
     const projectId = get(currentProjectId);
-    const elementTypeId = 7; // Assuming 1 is for Logo
+    const elementTypeId = 7; 
 
-    // Function to close the modal
+    
     function onClose() {
         showModal = false;
-        dispatch('close'); // Dispatch close event to parent
+        dispatch('close'); 
     }
 
-    // Function to handle file upload
+   
     async function onUpload(event) {
         const file = event.detail.file;
 
@@ -47,7 +47,7 @@
         }
     }
 
-    // Fetch deadlines on component mount
+   
     onMount(async () => {
         try {
             const response = await fetch(`http://192.168.0.102:8080/zpi/deadlines/getDeadlineByProjectIdAndElementTypeId?projectId=${projectId}&elementTypeId=${elementTypeId}`);

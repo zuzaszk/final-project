@@ -75,7 +75,7 @@
 </div>
 
 <style>
-  /* Styling for dropdowns and input fields */
+
   .dropdown, .search-input {
     padding: 0.5rem;
     border: 1px solid #BDC3C7;
@@ -99,15 +99,15 @@
     background-color: #C0392B;
   }
 
-  /* Container for dropdowns on small screens */
+ 
   .dropdown-container {
     display: flex;
     gap: 0.5rem;
   }
 
-  /* Responsive adjustments */
+
   @media (max-width: 768px) {
-    /* Stack elements on very small screens */
+
     .search-bar {
       flex-direction: column;
       gap: 0.5rem;
@@ -120,7 +120,7 @@
     }
 
     .dropdown, .search-input, .search-button {
-      width: 90%; /* Full width on mobile */
+      width: 90%; 
     }
   }
 </style>

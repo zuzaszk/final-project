@@ -4,7 +4,7 @@
   export let isEditMode = false;
   export let project = null;
 
-  // Mock data for testing
+
   let projectName = 'Mock Project Name';
   let description = 'Mock project description';
   let shortDescription = 'Mock short description';
@@ -53,35 +53,35 @@
       {isEditMode ? 'Edit Your Project' : 'Upload Your Final Project'}
     </h2>
 
-    <!-- Mandatory Information Section -->
+ 
     <h3 class="text-xl font-semibold text-gray-800 mb-4">Mandatory Information</h3>
     <div class="grid grid-cols-2 gap-6 mb-8">
-      <!-- Description -->
+      
       <div class="upload-box" on:click={() => document.getElementById('description').focus()}>
         <input id="description" type="text" bind:value={description} class="hidden" />
         <label class="upload-label"><span>📝</span> Description</label>
       </div>
 
-      <!-- Short Description -->
+      
       <div class="upload-box" on:click={() => document.getElementById('shortDescription').focus()}>
         <input id="shortDescription" type="text" bind:value={shortDescription} class="hidden" />
         <label class="upload-label"><span>🔠</span> Short Description</label>
       </div>
 
-      <!-- Source Code -->
+     
       <div class="upload-box" on:click={() => document.getElementById('sourceCode').click()}>
         <input id="sourceCode" type="file" accept=".zip,.rar" on:change={(e) => handleFileUpload(e, 'sourceCode')} class="hidden" />
         <label class="upload-label"><span>🛠️</span> Source Code</label>
       </div>
 
-      <!-- Report -->
+    
       <div class="upload-box" on:click={() => document.getElementById('report').click()}>
         <input id="report" type="file" accept=".pdf" on:change={(e) => handleFileUpload(e, 'report')} class="hidden" />
         <label class="upload-label"><span>📄</span> Report</label>
       </div>
     </div>
 
-    <!-- Optional Information Section -->
+
     <h3 class="text-xl font-semibold text-gray-800 mb-4">Optional Information</h3>
     <div class="grid grid-cols-2 gap-6 mb-8">
       <!-- Poster -->

@@ -9,13 +9,13 @@
   
     function onClose() {
       showModal = false;
-      dispatch('close'); // Dispatch close event to parent
+      dispatch('close'); 
     }
   
     async function onUpload(event) {
-      const file = event.detail.file;  // Retrieve file from the ModalTemplate component
-      const projectId = get(currentProjectId);  // Get the project ID from the store
-      const elementTypeId = 3;  // Element type ID for Source Code
+      const file = event.detail.file;  
+      const projectId = get(currentProjectId);  
+      const elementTypeId = 3;  
   
       const formData = new FormData();
       formData.append('file', file);
@@ -30,8 +30,8 @@
   
         if (response.ok) {
           console.log("File uploaded successfully for Source Code");
-          dispatch('upload', { success: true }); // Notify parent of successful upload
-          showModal = false;  // Close the modal after successful upload
+          dispatch('upload', { success: true });
+          showModal = false;  
         } else {
           console.error("Failed to upload file for Source Code");
         }

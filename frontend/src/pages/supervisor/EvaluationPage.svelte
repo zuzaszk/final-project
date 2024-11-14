@@ -5,27 +5,27 @@
     let projectId = null;
     let project = {};
     let members = [];
-    let selectedRating = 0;  // Holds the star rating selected
+    let selectedRating = 0;  
     let evaluationComment = '';
     let submitting = false;
     let loading = true;
     let error = '';
-    let posterUrl = '';  // Stores the URL for the project poster
+    let posterUrl = ''; 
   
-    const userId = 8;  // Set dynamically based on logged-in user
-    const roleId = 3;  // Set dynamically if required
+    const userId = 8; 
+    const roleId = 3;  
   
     function getLanguageName(languageCode) {
       return languageCode === 1 ? 'English' : languageCode === 2 ? 'Polish' : 'Unknown';
     }
   
-    // Extract projectId from the URL
+ 
     $: loc.subscribe(($loc) => {
       const pathParts = $loc.location.split('/');
       projectId = pathParts[pathParts.length - 1];
     });
   
-    // Fetch project details and team members
+  
     async function fetchProjectDetails() {
       if (!projectId) {
         error = 'Project ID is missing';
@@ -39,8 +39,8 @@
           const data = await response.json();
           project = data;
           members = project.userRole?.filter(member => member.roles?.roleName === 'student') || [];
-          // Fetch the poster with a hardcoded element ID or use a dynamic ID
-          fetchPoster(12);  // Replace with the actual element ID if available
+         
+          fetchPoster(12); 
         } else {
           error = 'Failed to load project details.';
         }
@@ -51,7 +51,7 @@
       }
     }
   
-    // Fetch poster image
+ 
     async function fetchPoster(projectElementId) {
       try {
         const response = await fetch(`http://192.168.0.102:8080/zpi/projectElements/retrieve?projectElementId=${projectElementId}`);
@@ -65,7 +65,7 @@
       }
     }
   
-    // Submit an evaluation
+
     async function submitEvaluation() {
       if (!evaluationComment.trim()) {
         alert("Please provide a comment for your evaluation.");
@@ -82,15 +82,15 @@
             roleId: roleId,
             score: selectedRating,
             comment: evaluationComment,
-            isPublic: 1  // Assuming evaluations are public
+            isPublic: 1  
           })
         });
   
         if (response.ok) {
           alert("Evaluation submitted successfully.");
-          evaluationComment = '';  // Clear input
+          evaluationComment = '';  
           selectedRating = 0;
-          await fetchProjectDetails();  // Refresh project details to fetch updated evaluations
+          await fetchProjectDetails();  
         } else {
           console.error('Failed to submit evaluation');
         }
@@ -104,17 +104,17 @@
     onMount(fetchProjectDetails);
   </script>
   
-  <!-- Loading or Error Display -->
+  
   {#if loading}
     <div class="text-center text-xl text-[#2C3E50]">Loading project details...</div>
   {:else if error}
     <div class="text-center text-xl text-red-600">{error}</div>
   {:else}
-    <!-- Project Details Display -->
+
     <div class="zoom-container container mx-auto p-6 bg-white rounded-lg shadow-lg mt-20 max-w-6xl h-[650px] overflow-hidden">
       <div class="h-full overflow-y-auto p-4">
         <div class="flex flex-col lg:flex-row justify-between">
-          <!-- Project Information -->
+     
           <div class="lg:w-2/3">
             <h1 class="text-4xl font-bold text-[#2C3E50] mb-4">{project.title} ({project.acronym || "N/A"})</h1>
             <h2 class="text-xl font-bold text-[#2C3E50] mb-2">Project Description</h2>
@@ -123,7 +123,7 @@
             <h3 class="text-lg font-bold text-[#2C3E50] mb-2">Technologies Used:</h3>
             <p class="text-[#7F8C8D] font-medium mb-6">{project.keywords || "Not specified"}</p>
   
-            <!-- Language and Year Information -->
+        
             <div class="flex space-x-10 mb-6">
               <div>
                 <h3 class="text-lg font-bold text-[#2C3E50]">Language:</h3>
@@ -135,7 +135,6 @@
               </div>
             </div>
   
-            <!-- Team Members Section -->
             <div class="bg-[#ECF0F1] p-4 rounded-lg mb-6">
               <h3 class="text-lg font-bold text-[#2C3E50] mb-4">Team Members</h3>
               <div class="grid grid-cols-2 gap-4">
@@ -148,7 +147,7 @@
             </div>
           </div>
   
-          <!-- Project Poster -->
+      
           <div class="lg:w-1/3 lg:pl-6 flex justify-center lg:justify-end">
             {#if posterUrl}
               <img src={posterUrl} alt="Project Poster" class="rounded-lg shadow-lg w-full lg:w-auto h-auto max-h-[600px]" />
@@ -156,7 +155,7 @@
           </div>
         </div>
   
-        <!-- Evaluation Section -->
+    
         <div class="bg-[#F5F5F5] p-6 rounded-lg shadow-inner mt-10">
           <h2 class="text-2xl font-bold text-[#2C3E50] mb-4">Provide Your Evaluation</h2>
   

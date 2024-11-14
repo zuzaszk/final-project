@@ -149,7 +149,7 @@
    <script>
     import { onMount } from 'svelte';
     import { push } from 'svelte-spa-router';
-    import { currentProjectId } from '../../projectStore'; // Import from projectStore.js
+    import { currentProjectId } from '../../projectStore'; 
   
     let projectName = '';
     let selectedEdition = '';
@@ -157,7 +157,7 @@
     let errorMessage = '';
     let isSubmitting = false;
   
-    // Fetch list of editions on mount
+
     onMount(async () => {
       try {
         const response = await fetch('http://192.168.0.102:8080/zpi/editions/listAll');
@@ -191,18 +191,18 @@
       const contentType = response.headers.get('content-type');
       
       if (contentType && contentType.includes('application/json')) {
-        // Parse JSON response
+       
         const data = await response.json();
-        currentProjectId.set(data.projectId); // Save projectId in the store
-        push('/my-projects/constant'); // Redirect after creation
+        currentProjectId.set(data.projectId); 
+        push('/my-projects/constant'); 
       } else if (contentType && contentType.includes('text/plain')) {
-        // Handle plain text response
+
         const text = await response.text();
         console.log('Plain text response:', text);
         if (text.includes("Project created successfully")) {
-          // Mock projectId setting for testing
-          currentProjectId.set(25); // Set a mock project ID or adjust as needed
-          push('/my-projects/constant'); // Redirect after creation
+
+          currentProjectId.set(25); 
+          push('/my-projects/constant'); 
         } else {
           errorMessage = 'Unexpected response from server: ' + text;
         }
@@ -223,7 +223,7 @@
 
   </script>
   
-  <!-- UI layout for CreateProject -->
+
   <div class="container mx-auto pt-32 px-4 sm:px-0 flex justify-center items-center min-h-screen">
     <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full sm:w-3/4 lg:w-1/2">
       <h2 class="text-2xl font-bold text-[#2C3E50] mb-6 text-center">Create a New Project</h2>

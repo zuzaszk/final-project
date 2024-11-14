@@ -37,7 +37,7 @@
 </div>
 
 <style>
-  /* Default styles for the card */
+
   .card-container {
     min-height: 200px;
     width: 100%;
@@ -46,9 +46,8 @@
     padding: 1rem;
   }
 
-  /* Title, acronym, and description styles */
   .title {
-    font-size: 1rem; /* Slightly smaller than before */
+    font-size: 1rem; 
   }
 
   .acronym {
@@ -59,19 +58,19 @@
     font-size: 0.75rem;
   }
 
-  /* Button styling */
+
   .view-button {
-    width: 120px; /* Slightly smaller width */
-    font-size: 0.875rem; /* Slightly smaller font */
+    width: 120px; 
+    font-size: 0.875rem;
     padding: 0.5rem;
   }
 
-  /* Hover effect */
+
   .card-container:hover {
     transform: scale(1.03);
   }
 
-  /* Adjustments for mobile screens */
+
   @media (max-width: 640px) {
     .card-container {
       padding: 0.75rem;
@@ -87,7 +86,7 @@
     }
 
     .view-button {
-      width: 100%; /* Full width for mobile for better accessibility */
+      width: 100%; 
       padding: 0.5rem;
     }
   }

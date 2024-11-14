@@ -69,12 +69,12 @@
       </select>
     </div>
   
-    <!-- Error Message Display -->
+
     {#if errorMessage}
       <div class="text-center text-red-500 mb-4">{errorMessage}</div>
     {/if}
   
-    <!-- Project Cards -->
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       {#each evaluations as evaluation}
         <div class="bg-white p-6 rounded-lg shadow-md">
@@ -105,12 +105,11 @@
     .container {
       max-width: 1200px;
       padding-top: 100px;
-      transform: scale(0.85); /* Scale down to 75% */
+      transform: scale(0.85); 
       transform-origin: center top;
     }
     
     .zoom-out-75 {
-      margin-top: 50px; /* Push content down */
+      margin-top: 50px; 
     }
   </style>
-  

@@ -15,7 +15,7 @@
     async function onUpload(event) {
       const file = event.detail.file;
       const projectId = get(currentProjectId);
-      const elementTypeId = 8; // Assuming 8 is the ID for Abstracts
+      const elementTypeId = 8; 
 
       const formData = new FormData();
       formData.append('file', file);

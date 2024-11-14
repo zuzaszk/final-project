@@ -11,7 +11,7 @@
     let hardDeadline = '';
 
     const projectId = get(currentProjectId);
-    const elementTypeId = 5; // Element type ID for Premise
+    const elementTypeId = 5; 
 
     function onClose() {
         showModal = false;

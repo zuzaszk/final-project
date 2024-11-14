@@ -71,16 +71,16 @@
   </div>
   
   <style>
-    /* Center the pagination container and add padding */
+    
     .pagination-container {
       display: flex;
       gap: 6px;
       justify-content: center;
       align-items: center;
-      padding: 16px 0; /* Add padding to avoid it sticking to the very bottom */
+      padding: 16px 0; 
     }
   
-    /* Pagination button styling */
+    
     .pagination-btn {
       padding: 8px 14px;
       margin: 0 4px;
@@ -93,14 +93,14 @@
       font-size: 0.9rem;
     }
   
-    /* Active and hover styles */
+
     .pagination-btn:hover,
     .pagination-btn.active {
       background-color: #E74C3C;
       color: white;
     }
   
-    /* Mobile adjustments */
+
     @media (max-width: 640px) {
       .pagination-container {
         gap: 4px;
