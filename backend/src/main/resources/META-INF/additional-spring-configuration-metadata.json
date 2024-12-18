@@ -1,5 +1,0 @@
-{"properties": [{
-  "name": "frontend_url",
-  "type": "java.lang.String",
-  "description": "URL on which frontend is running"
-}]}
